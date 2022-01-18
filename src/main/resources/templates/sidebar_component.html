@@ -1,0 +1,53 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px; height:100%; min-height:100vh;" th:fragment="sidebarComponent">
+    <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="/svg/table-solid.svg#table"></use></svg>
+      <span class="fs-4" th:text=#{sidebar.title}>Title</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/" class="nav-link text-white" th:classappend="${#strings.equals(#httpServletRequest.requestURI,'/')}  ? 'active'">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="/svg/course.svg#course"></use></svg>
+          <span th:text="#{sidebar.course}">Course</span>
+        </a>
+      </li>
+      <li>
+        <a href="/student" class="nav-link text-white" th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/student')} ? 'active'">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="/svg/student.svg#student"></use></svg>
+          <span th:text="#{sidebar.student}">Student</span>
+        </a>
+      </li>
+      <li>
+        <a href="/assignment" class="nav-link text-white" th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/assignment')} ? 'active'">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="/svg/assignment.svg#assignment"></use></svg>
+          <span th:text="#{sidebar.assignment}">Course Assignment</span>
+        </a>
+      </li>
+      <li>
+        <a href="/subject" class="nav-link text-white" th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/subject')} ? 'active'">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="/svg/subject.svg#subject"></use></svg>
+          <span th:text="#{sidebar.subject}">Subject</span>
+        </a>
+      </li>
+      <li>
+        <a href="/teacher" class="nav-link text-white" th:classappend="${#strings.startsWith(#httpServletRequest.requestURI,'/teacher')} ? 'active'">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="/svg/teacher.svg#teacher"></use></svg>
+          <span th:text=#{sidebar.teacher}>Teacher</span>
+        </a>
+      </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+        <strong th:text="${session_user.username}"></strong>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="">
+        <li><a class="dropdown-item" href="#">New project...</a></li>
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="/logout" th:text="#{sidebar.logout}">Sign out</a></li>
+      </ul>
+    </div>
+</div>

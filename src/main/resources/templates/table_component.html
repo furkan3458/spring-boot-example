@@ -1,0 +1,14 @@
+<div class="table-responsive" th:fragment="tableComponent">
+<table id="table" class="table table-sm table-bordered responsive table-hover table-striped" th:data-table="${table}" style="width:100%">
+	<thead>
+		<tr>
+			<th th:each="col : ${columns}" th:text="${col}"></th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th th:each="col : ${columns}" th:text="${col}"></th>
+		</tr>
+	</tfoot>
+</table>
+</div>

@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="navbar" th:fragment="navbarComponent">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/}" th:text=#{navbar.title}>Example</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#HomeNavbar" aria-controls="HomeNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="HomeNavbar">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" th:href="@{/}" th:text=#{navbar.home}>Home</a>
+          </li>
+        </ul>
+        <form>
+          <input class="form-control" type="text" th:placeholder="#{navbar.search}" aria-label="Search">
+        </form>
+      </div>
+    </div>
+  </nav>
