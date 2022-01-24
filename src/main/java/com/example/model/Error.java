@@ -1,8 +1,5 @@
 package com.example.model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import org.springframework.http.HttpStatus;
 
 import com.example.util.ErrorHandleType;
@@ -24,7 +21,7 @@ public class Error {
 	
 	private String details;
 	
-    private LocalDate date;
+    private String date;
     
-    private LocalTime time;
+    private String time;
 }

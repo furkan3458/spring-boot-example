@@ -18,7 +18,7 @@ public class ValidationExceptionHandler {
 	@ExceptionHandler(value = {ConstraintViolationException.class})
 	public ResponseEntity<Error> constraintViolationHandler(ConstraintViolationException exception){
 		String errorMessage = new ArrayList<>(exception.getConstraintViolations()).get(0).getMessage();
-		Error error = new Error(HttpStatus.BAD_REQUEST, ErrorHandleType.CONSTRAINT_VIOLATION , errorMessage, exception.getLocalizedMessage() ,LocalDateTime.now().toLocalDate(), LocalDateTime.now().toLocalTime());
+		Error error = new Error(HttpStatus.BAD_REQUEST, ErrorHandleType.CONSTRAINT_VIOLATION , errorMessage, exception.getLocalizedMessage() ,LocalDateTime.now().toLocalDate().toString(), LocalDateTime.now().toLocalTime().toString());
 		
 		return ResponseEntity.badRequest().body(error);
 	}

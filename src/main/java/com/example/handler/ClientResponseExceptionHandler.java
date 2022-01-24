@@ -17,7 +17,7 @@ public class ClientResponseExceptionHandler {
 	@ExceptionHandler(value = {AccessDeniedException.class})
 	public ResponseEntity<Error> accessDeniedHandler(AccessDeniedException exception){
 		String errorMessage = "Your role access is not acceptable for this trasaction.";
-		Error error = new Error(HttpStatus.FORBIDDEN, ErrorHandleType.ACCESS_DENIED, errorMessage, exception.getLocalizedMessage() ,LocalDateTime.now().toLocalDate(), LocalDateTime.now().toLocalTime());
+		Error error = new Error(HttpStatus.FORBIDDEN, ErrorHandleType.ACCESS_DENIED, errorMessage, exception.getLocalizedMessage() ,LocalDateTime.now().toLocalDate().toString(), LocalDateTime.now().toLocalTime().toString());
 		
 		return ResponseEntity.badRequest().body(error);
 	}

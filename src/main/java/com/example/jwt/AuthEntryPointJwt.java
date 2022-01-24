@@ -51,7 +51,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
 	private String authorizedError(String message) {
 		ObjectMapper o = new ObjectMapper();
-		Error error = new Error(HttpStatus.UNAUTHORIZED, ErrorHandleType.UNAUTHORIZED_ACCESS, "Unauthorized access denied.", message,LocalDateTime.now().toLocalDate(), LocalDateTime.now().toLocalTime());
+		Error error = new Error(HttpStatus.UNAUTHORIZED, ErrorHandleType.UNAUTHORIZED_ACCESS, "Unauthorized access denied.", message,LocalDateTime.now().toLocalDate().toString(), LocalDateTime.now().toLocalTime().toString());
 		String er;
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;

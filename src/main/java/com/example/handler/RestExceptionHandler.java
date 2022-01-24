@@ -24,7 +24,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         
 		String message = ex.getAllErrors().get(0).getDefaultMessage();
 		
-		Error error = new Error(HttpStatus.BAD_REQUEST, ErrorHandleType.ARGUMENT_NOT_VALID, message, ex.getBindingResult().toString() ,LocalDateTime.now().toLocalDate(), LocalDateTime.now().toLocalTime());
+		Error error = new Error(HttpStatus.BAD_REQUEST, ErrorHandleType.ARGUMENT_NOT_VALID, message, ex.getBindingResult().toString() ,LocalDateTime.now().toLocalDate().toString(), LocalDateTime.now().toLocalTime().toString());
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
@@ -32,7 +32,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
 		
-		Error error = new Error(HttpStatus.UNSUPPORTED_MEDIA_TYPE, ErrorHandleType.MEDIA_TYPE_NOT_SUPPORTED, "Only supported content type is application/json", ex.getLocalizedMessage() ,LocalDateTime.now().toLocalDate(), LocalDateTime.now().toLocalTime());
+		Error error = new Error(HttpStatus.UNSUPPORTED_MEDIA_TYPE, ErrorHandleType.MEDIA_TYPE_NOT_SUPPORTED, "Only supported content type is application/json", ex.getLocalizedMessage() ,LocalDateTime.now().toLocalDate().toString(), LocalDateTime.now().toLocalTime().toString());
 		
 		return new ResponseEntity<>(error, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
 	}
@@ -41,7 +41,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
 			HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
 		
-		Error error = new Error(HttpStatus.METHOD_NOT_ALLOWED, ErrorHandleType.METHOD_NOT_SUPPORTED, "Use GET,POST,DELETE,PUT methods.", ex.getLocalizedMessage() ,LocalDateTime.now().toLocalDate(), LocalDateTime.now().toLocalTime());
+		Error error = new Error(HttpStatus.METHOD_NOT_ALLOWED, ErrorHandleType.METHOD_NOT_SUPPORTED, "Use GET,POST,DELETE,PUT methods.", ex.getLocalizedMessage() ,LocalDateTime.now().toLocalDate().toString(), LocalDateTime.now().toLocalTime().toString());
 		
 		return new ResponseEntity<>(error, HttpStatus.METHOD_NOT_ALLOWED);
 	}
@@ -50,7 +50,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(
 			HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
 		
-		Error error = new Error(HttpStatus.BAD_REQUEST, ErrorHandleType.MESSAGE_NOT_READABLE, "Change your parameters.", ex.getLocalizedMessage() ,LocalDateTime.now().toLocalDate(), LocalDateTime.now().toLocalTime());
+		Error error = new Error(HttpStatus.BAD_REQUEST, ErrorHandleType.MESSAGE_NOT_READABLE, "Change your parameters.", ex.getLocalizedMessage() ,LocalDateTime.now().toLocalDate().toString(), LocalDateTime.now().toLocalTime().toString());
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
