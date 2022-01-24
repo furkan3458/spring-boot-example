@@ -42,6 +42,10 @@ public class User implements Serializable {
 	private String username;
 
 	@NotBlank
+	@Size(max = 20)
+	private String fullname;
+	
+	@NotBlank
 	@Size(max = 50)
 	@Email
 	private String email;
@@ -56,8 +60,9 @@ public class User implements Serializable {
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 
-	public User(String username, String email, String password) {
+	public User(String username, String fullname, String email, String password) {
 		this.username = username;
+		this.fullname = fullname;
 		this.email = email;
 		this.password = password;
 	}
