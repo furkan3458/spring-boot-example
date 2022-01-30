@@ -49,7 +49,7 @@ public class JwtUtils {
 			return true;
 		} catch (SignatureException | MalformedJwtException | UnsupportedJwtException | ExpiredJwtException | IllegalArgumentException ex) {
 			logger.debug("Validate token error {}",ex.getMessage());
-			throw ex;
+			return false;
 		}
 	}
 }

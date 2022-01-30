@@ -24,9 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.jwt.JwtResponse;
 import com.example.jwt.JwtUtils;
+import com.example.jwt.JwtValidateResponse;
 import com.example.jwt.LoginRequest;
 import com.example.jwt.MessageResponse;
 import com.example.jwt.SignupRequest;
+import com.example.jwt.ValidateRequest;
 import com.example.model.Role;
 import com.example.model.User;
 import com.example.repository.RoleRepository;
@@ -144,5 +146,20 @@ public class AuthController {
 		userRepository.save(user);
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+	}
+	
+	@PostMapping(path="/validate", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> validateUser(@RequestBody ValidateRequest validateRequest) {
+		
+		if(validateRequest.getToken().isEmpty() || validateRequest.getToken() == null || validateRequest.getToken().isBlank() ||
+			validateRequest.getUsername().isEmpty() || validateRequest.getUsername() == null || validateRequest.getUsername().isBlank()) {
+			return ResponseEntity.ok(new JwtValidateResponse(false, "Cannot acceptable."));
+		}
+		
+		if(!jwtUtils.validateToken(validateRequest.getToken()) || !jwtUtils.getUserNameFromJwtToken(validateRequest.getToken()).equals(validateRequest.getUsername())) {
+			return ResponseEntity.ok(new JwtValidateResponse(false, "Cannot acceptable."));
+		}
+			
+		return ResponseEntity.ok(new JwtValidateResponse(true, "Success."));
 	}
 }
