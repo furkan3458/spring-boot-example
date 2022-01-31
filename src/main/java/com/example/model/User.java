@@ -59,6 +59,14 @@ public class User implements Serializable {
 				joinColumns = @JoinColumn(name = "user_id"), 
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
+	
+	public User(Long id, String username, String fullname, String email, String password) {
+		this.id = id;
+		this.username = username;
+		this.fullname = fullname;
+		this.email = email;
+		this.password = password;
+	}
 
 	public User(String username, String fullname, String email, String password) {
 		this.username = username;

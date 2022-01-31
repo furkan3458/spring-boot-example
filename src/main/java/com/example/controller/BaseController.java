@@ -132,10 +132,18 @@ public class BaseController {
 	public ModelAndView loginSuccess(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
 		UserDetailsImpl userDetail = (UserDetailsImpl)auth.getPrincipal();
+		Cookie cookies[] = request.getCookies();
+		boolean rememberMe = false;
 		
 		Optional<User> user = userRepository.findByUsername(userDetail.getUsername());
 		
-		String jwt = jwtUtils.generateJwtToken(auth);
+		for(Cookie c : cookies) {
+			if(c.getName().equals("remember-me")) {
+				rememberMe = true;
+			}
+		}
+		
+		String jwt = jwtUtils.generateJwtToken(auth,rememberMe);
 	    
 	    HttpSession session = request.getSession(true);
 	    

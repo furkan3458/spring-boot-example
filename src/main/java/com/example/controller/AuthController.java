@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,8 +30,10 @@ import com.example.jwt.LoginRequest;
 import com.example.jwt.MessageResponse;
 import com.example.jwt.SignupRequest;
 import com.example.jwt.ValidateRequest;
+import com.example.model.JwtSession;
 import com.example.model.Role;
 import com.example.model.User;
+import com.example.repository.JwtSessionRepository;
 import com.example.repository.RoleRepository;
 import com.example.repository.UserRepository;
 import com.example.security.UserDetailsImpl;
@@ -48,6 +51,9 @@ public class AuthController {
 
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	JwtSessionRepository jwtSessionRepository;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -68,19 +74,39 @@ public class AuthController {
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication,loginRequest.isRememberMe());
 		
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		JwtSession jwtSession = new JwtSession();
+		
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
+		
+		User user = new User(userDetails.getId(), 
+				userDetails.getUsername(), 
+				userDetails.getFullname(), 
+				userDetails.getEmail(),
+				userDetails.getPassword());
+		Optional <JwtSession> jwtSessionOptional = jwtSessionRepository.findTopByUsers(user);
+		
+		if(jwtSessionOptional.isEmpty()) 
+			jwtSession.setUsers(user);
+		else 
+			jwtSession = jwtSessionOptional.get();
+		
+		jwtSession.setJwttoken(jwt);
+		jwtSession.setExpiretime(loginRequest.isRememberMe() ? null : jwtUtils.getExpireTimeFromJwtToken(jwt));	
+		
+		jwtSessionRepository.save(jwtSession);
 
 		return ResponseEntity.ok(new JwtResponse(jwt, 
 												 userDetails.getId(), 
 												 userDetails.getFullname(),
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(), 
-												 roles));
+												 roles,
+												 loginRequest.isRememberMe()));
 	}
 
 	@PostMapping("/signup")
@@ -151,15 +177,19 @@ public class AuthController {
 	@PostMapping(path="/validate", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> validateUser(@RequestBody ValidateRequest validateRequest) {
 		
+		Optional<JwtSession> jwtSessionOptional;
+		
 		if(validateRequest.getToken().isEmpty() || validateRequest.getToken() == null || validateRequest.getToken().isBlank() ||
 			validateRequest.getUsername().isEmpty() || validateRequest.getUsername() == null || validateRequest.getUsername().isBlank()) {
-			return ResponseEntity.ok(new JwtValidateResponse(false, "Cannot acceptable."));
+			return ResponseEntity.ok(new JwtValidateResponse(false, 1, "Cannot acceptable."));
 		}
-		
-		if(!jwtUtils.validateToken(validateRequest.getToken()) || !jwtUtils.getUserNameFromJwtToken(validateRequest.getToken()).equals(validateRequest.getUsername())) {
-			return ResponseEntity.ok(new JwtValidateResponse(false, "Cannot acceptable."));
+		else if(!jwtUtils.validateToken(validateRequest.getToken()) || !jwtUtils.getUserNameFromJwtToken(validateRequest.getToken()).equals(validateRequest.getUsername())) {
+			return ResponseEntity.ok(new JwtValidateResponse(false, 2, "Cannot acceptable."));
+		}
+		else if((jwtSessionOptional = jwtSessionRepository.findTopByJwttoken(validateRequest.getToken())).isEmpty() || !jwtSessionOptional.get().getUsers().getUsername().equals(validateRequest.getUsername())) {
+			return ResponseEntity.ok(new JwtValidateResponse(false, 3, "Cannot acceptable."));
 		}
 			
-		return ResponseEntity.ok(new JwtValidateResponse(true, "Success."));
+		return ResponseEntity.ok(new JwtValidateResponse(true, 0, "Success."));
 	}
 }

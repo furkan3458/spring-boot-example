@@ -16,5 +16,5 @@ public class JwtResponse {
 	private String fullname;
 	private String username, email;
 	private List<String> roles;
-	
+	private boolean rememberMe;
 }

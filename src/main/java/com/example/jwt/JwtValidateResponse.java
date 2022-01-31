@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class JwtValidateResponse {
 	
 	private boolean validate;
+	private Integer status;
 	private String message;
 	
 }
