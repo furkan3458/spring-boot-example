@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ValidateResponse {
 	
-	private boolean response;
+	private boolean result;
 	private Integer status;
 	private String message;
 	
